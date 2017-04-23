@@ -27,7 +27,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
  * Created by mark on 4/23/17.
  */
 
-public class MainSignInActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener,View.OnClickListener {
+public class MainSignInActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     private static final String TAG = "MainSignInActivity";
     private static final int UNIQUE_SIGN_IN = 9001;
     Button emailpass;
@@ -101,10 +101,10 @@ public class MainSignInActivity extends BaseActivity implements GoogleApiClient.
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            // Sign in success
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = auth.getCurrentUser();
-                            //updateUI(user);
+
                             Intent i = new Intent(MainSignInActivity.this, MainActivity.class);
                             startActivity(i);
                         } else {
@@ -139,7 +139,7 @@ public class MainSignInActivity extends BaseActivity implements GoogleApiClient.
         int i = v.getId();
         if (i == R.id.sign_in_button) {
             signIn();
-        }  else if (i == R.id.email_pass_button) {
+        } else if (i == R.id.email_pass_button) {
             emailPass_SignIn();
 
 
