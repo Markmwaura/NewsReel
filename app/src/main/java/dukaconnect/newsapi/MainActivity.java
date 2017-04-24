@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import dukaconnect.newsapi.fragments.HomeFragment;
+import dukaconnect.newsapi.fragments.TechArticlesFragment;
+import dukaconnect.newsapi.fragments.TechSourcesFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -102,10 +104,10 @@ public class MainActivity extends BaseActivity
             fragment = new HomeFragment();
 
         } else if (id == R.id.nav_techsources) {
-            fragment = new HomeFragment();
+            fragment = new TechSourcesFragment();
 
         } else if (id == R.id.nav_aboutus) {
-            fragment = new HomeFragment();
+            fragment = new TechArticlesFragment();
 
         } else if (id == R.id.nav_signout) {
             signOut();
