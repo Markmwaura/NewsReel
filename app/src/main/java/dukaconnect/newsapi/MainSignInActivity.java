@@ -15,6 +15,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -29,10 +31,44 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainSignInActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     private static final String TAG = "MainSignInActivity";
-    private static final int UNIQUE_SIGN_IN = 9001;
+    private static final int UNIQUE_SIGN_IN = 9002;
+    public static FirebaseAuth auth;
+    public static GoogleApiClient googleApiClient;
     Button emailpass;
-    private FirebaseAuth auth;
-    private GoogleApiClient googleApiClient;
+
+    public static void signOut() {
+        // Firebase sign out
+        auth.signOut();
+
+        // Google sign out
+        googleApiClient.connect();
+        googleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(@Nullable Bundle bundle) {
+
+                FirebaseAuth.getInstance().signOut();
+                if (googleApiClient.isConnected()) {
+                    Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(@NonNull Status status) {
+                            if (status.isSuccess()) {
+                                Log.i("logout successful", "Mainsigninactivity");
+                            } else {
+                                Log.i("logout did not succeed", "Mainsigninactivity");
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onConnectionSuspended(int i) {
+                Log.d(TAG, "Google API Client Connection Suspended");
+            }
+        });
+
+
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +104,6 @@ public class MainSignInActivity extends BaseActivity implements GoogleApiClient.
 
     private void updateUI(FirebaseUser currentUser) {
     }
-
 
     //on activityresult
     @Override
@@ -108,7 +143,8 @@ public class MainSignInActivity extends BaseActivity implements GoogleApiClient.
                             Intent i = new Intent(MainSignInActivity.this, MainActivity.class);
                             startActivity(i);
                         } else {
-                            // If sign in fails, display a message to the user.
+                            // If sign in fail//                            Intent i = new Intent(MainSignInActivity.this, MainActivity.class);
+//                            startActivity(i);s, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(MainSignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -121,7 +157,6 @@ public class MainSignInActivity extends BaseActivity implements GoogleApiClient.
                 });
     }
 
-
     // Manual email and password activity auth
     private void emailPass_SignIn() {
         Intent i = new Intent(MainSignInActivity.this, EmailPasswordActivity.class);
@@ -130,6 +165,8 @@ public class MainSignInActivity extends BaseActivity implements GoogleApiClient.
 
     // Sign in with Google
     private void signIn() {
+
+
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, UNIQUE_SIGN_IN);
     }

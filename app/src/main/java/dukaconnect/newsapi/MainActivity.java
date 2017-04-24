@@ -2,30 +2,42 @@ package dukaconnect.newsapi;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import dukaconnect.newsapi.fragments.HomeFragment;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public FirebaseAuth auth;
+    DrawerLayout drawer;
+    FirebaseUser user;
+    TextView welcometext;
+    MainSignInActivity mainSignInActivity = new MainSignInActivity();
     private Fragment fragment = null;
     private FragmentManager fragmentManager;
-    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        welcometext = (TextView) findViewById(R.id.welcome_email);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -39,8 +51,13 @@ public class MainActivity extends AppCompatActivity
 
 
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_all));
+        View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
+        TextView tv = ((TextView) header.findViewById(R.id.welcome_email));
 
+        tv.setText("Hi " + MainSignInActivity.auth.getCurrentUser().getEmail());
         drawer.openDrawer(Gravity.START);
+
+
     }
 
     @Override
@@ -85,6 +102,13 @@ public class MainActivity extends AppCompatActivity
             fragment = new HomeFragment();
 
         } else if (id == R.id.nav_techsources) {
+            fragment = new HomeFragment();
+
+        } else if (id == R.id.nav_aboutus) {
+            fragment = new HomeFragment();
+
+        } else if (id == R.id.nav_signout) {
+            signOut();
 
         }
 
@@ -100,4 +124,18 @@ public class MainActivity extends AppCompatActivity
 
         return true;
     }
+
+    private void signOut() {
+        // Firebase sign out
+
+        MainSignInActivity.signOut();
+
+        Intent intent = new Intent(this, MainSignInActivity.class);
+        intent.putExtra("finish", true);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+
+    }
+
 }

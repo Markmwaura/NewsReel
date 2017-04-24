@@ -5,10 +5,5 @@
 			  android:padding="50dp"
 			  android:layout_height="match_parent" android:weightSum="1">
 
-	<TextView
-		android:id="@+id/textView2"
-		android:layout_width="match_parent"
-		android:textSize="17dp"
 
-		android:layout_height="wrap_content" android:layout_weight="0.70" android:text="Heelo Mark"/>
 </LinearLayout>
