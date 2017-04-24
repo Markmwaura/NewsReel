@@ -56,8 +56,9 @@ public class MainActivity extends BaseActivity
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
         TextView tv = ((TextView) header.findViewById(R.id.welcome_email));
 
-        tv.setText("Hi " + MainSignInActivity.auth.getCurrentUser().getEmail());
+        tv.setText(" Hi " + MainSignInActivity.auth.getCurrentUser().getEmail());
         drawer.openDrawer(Gravity.START);
+
 
 
     }
@@ -131,6 +132,7 @@ public class MainActivity extends BaseActivity
         // Firebase sign out
 
         MainSignInActivity.signOut();
+        // Clear previous activities and return to login screen.
 
         Intent intent = new Intent(this, MainSignInActivity.class);
         intent.putExtra("finish", true);
