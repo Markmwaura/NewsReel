@@ -2,22 +2,39 @@ package dukaconnect.newsapi;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+
+import dukaconnect.newsapi.app.AppController;
+import dukaconnect.newsapi.data.Article;
+import dukaconnect.newsapi.data.DatabaseHandler;
+import dukaconnect.newsapi.data.Source;
 import dukaconnect.newsapi.fragments.HomeFragment;
 import dukaconnect.newsapi.fragments.TechArticlesFragment;
 import dukaconnect.newsapi.fragments.TechSourcesFragment;
@@ -30,6 +47,7 @@ public class MainActivity extends BaseActivity
     FirebaseUser user;
     TextView welcometext;
     MainSignInActivity mainSignInActivity = new MainSignInActivity();
+    DatabaseHandler db;
     private Fragment fragment = null;
     private FragmentManager fragmentManager;
 
@@ -38,6 +56,7 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        db = new DatabaseHandler(this);
         welcometext = (TextView) findViewById(R.id.welcome_email);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,8 +78,118 @@ public class MainActivity extends BaseActivity
         tv.setText(" Hi " + MainSignInActivity.auth.getCurrentUser().getEmail());
         drawer.openDrawer(Gravity.START);
 
+        // newRequestSources(AppConstants.MAINSOURCES_URL);
+
+        ///newRequestArticles(AppConstants.THENEXTWEB_URL);
+
+        List<Source> sources = db.getAllSources();
+        List<Article> articles = db.getAllArticles();
+
+//        for (Source sc : sources) {
+//            newRequestArticles(AppConstants.ARTICLES_URL+sc.get_id() );
+//
+//        }
+
+        for (Article cns : articles) {
+            String log = "News source id: " + cns.get_news_source_id() + " Url: " + cns.get_url();
+            // Writing Contacts to log
+            Log.d("articles: ", log);
+
+        }
 
 
+    }
+
+
+    public void newRequestArticles(String url) {
+        Log.i("amark", "here");
+        JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, url,
+                null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.i("amike", response.toString());
+
+                if (response != null) {
+
+                    parseJsonArticles(response);
+                    Log.i("amike", "here");
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("amike", error.toString());
+            }
+        });
+        AppController.getInstance().getRequestQueue().add(jsonReq);
+    }
+
+    public void parseJsonArticles(JSONObject response) {
+
+
+        try {
+
+            JSONArray feedArray = response.getJSONArray("articles");
+
+            for (int i = 0; i < feedArray.length(); i++) {
+                JSONObject articleObj = (JSONObject) feedArray.get(i);
+
+                db.addArticle(
+                        new Article(response.getString("source"), articleObj.getString("title"), articleObj.getString("description"), articleObj.getString("url"), articleObj.getString("urlToImage")));
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void newRequestSources(String url) {
+        Log.i("mark", "here");
+        JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, url,
+                null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.i("mike", response.toString());
+
+                if (response != null) {
+
+                    parseJson(response);
+                    Log.i("mike", "here");
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("mike", error.toString());
+            }
+        });
+        AppController.getInstance().getRequestQueue().add(jsonReq);
+    }
+
+    public void parseJson(JSONObject response) {
+
+
+        try {
+            JSONArray feedArray = response.getJSONArray("sources");
+
+            for (int i = 0; i < feedArray.length(); i++) {
+                JSONObject sourcesObj = (JSONObject) feedArray.get(i);
+                //Log.i(postObj.getString("id"), postObj.getString("category"));
+                db.addSource(new Source(sourcesObj.getString("id"),
+                        sourcesObj.getString("name"), sourcesObj.getString("description"),
+                        sourcesObj.getString("url"), sourcesObj.getString("category")));
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -69,30 +198,19 @@ public class MainActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            new AlertDialog.Builder(this)
+                    .setTitle("Really Exit?")
+                    .setMessage("Are you sure you want to exit?")
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            signOut();
+
+                            MainActivity.super.onBackPressed();
+                        }
+                    }).create().show();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -103,12 +221,15 @@ public class MainActivity extends BaseActivity
 
         if (id == R.id.nav_all) {
             fragment = new HomeFragment();
+            setTitle("All Articles");
 
         } else if (id == R.id.nav_techsources) {
             fragment = new TechSourcesFragment();
+            setTitle("All technology Sources");
 
-        } else if (id == R.id.nav_aboutus) {
+        } else if (id == R.id.nav_techsource_article) {
             fragment = new TechArticlesFragment();
+            setTitle("Articles from Source");
 
         } else if (id == R.id.nav_signout) {
             signOut();

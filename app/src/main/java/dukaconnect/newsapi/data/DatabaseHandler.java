@@ -16,15 +16,15 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
     // Database Versio
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database Name
     private static final String DATABASE_NAME = "NewsDatabase";
 
-    // Contacts table name
+    // Sources table name
     private static final String TABLE_SOURCES = "sources";
 
-    // Contacts table name
+    // Articles table name
     private static final String TABLE_ARTICLES = "articles";
 
     private static final String KEY_ID_SOURCE = "_id";
@@ -52,7 +52,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_SOURCES_TABLE = "CREATE TABLE " + TABLE_SOURCES + "("
                 + KEY_ID_SOURCE + " INTEGER PRIMARY KEY," + SOURCE_ID + " TEXT,"
-                + SOURCE_NAME + " TEXT" + SOURCE_DESCRIPTION + " TEXT,"
+                + SOURCE_NAME + " TEXT," + SOURCE_DESCRIPTION + " TEXT,"
                 + SOURCE_URL + " TEXT,"
                 + SOURCE_CATEGORY + " TEXT"
                 + ")";
@@ -84,7 +84,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //Add sources to table
-    void addSource(Source source) {
+    public void addSource(Source source) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cValues = new ContentValues();
@@ -101,7 +101,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //Add sources to table
-    void addArticle(Article article) {
+    public void addArticle(Article article) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cValues = new ContentValues();
@@ -141,9 +141,54 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        // return contact list
+        // return sources list
         return sourceList;
     }
+
+    public List<Source> getAllSources(String sourcecategory){
+        List<Source> tech_articleList = new ArrayList<Source>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_SOURCES,null, SOURCE_CATEGORY + "=?",
+                new String[] { sourcecategory }, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Source source = new Source();
+                source.set_category(cursor.getString(1));
+
+                tech_articleList.add(source);
+            } while (cursor.moveToNext());
+        }
+        return tech_articleList;
+
+    }
+
+    public List<Article> getAllArticles(String sourcecategory){
+        List<Article> tech_articleList = new ArrayList<Article>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_ARTICLES,null, ARTICLE_NEWSSOURCE_ID + "=?",
+                new String[] { sourcecategory }, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Article article = new Article();
+                article.set_news_source_id(cursor.getString(1));
+                article.set_title(cursor.getString(2));
+                article.set_desc(cursor.getString(3));
+                article.set_url(cursor.getString(4));
+                article.set_urltoimage(cursor.getString(5));
+
+                tech_articleList.add(article);
+            } while (cursor.moveToNext());
+        }
+        return tech_articleList;
+
+    }
+
 
     // Getting All articles
     public List<Article> getAllArticles() {
@@ -170,7 +215,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        // return contact list
+        // return article list
         return articleList;
     }
 

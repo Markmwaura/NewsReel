@@ -10,6 +10,7 @@
 		android:layout_height="match_parent"
 		android:gravity="center"
 		android:orientation="horizontal"
+		android:background="@mipmap/background_media"
 		android:padding="50dp">
 
 		<com.google.android.gms.common.SignInButton

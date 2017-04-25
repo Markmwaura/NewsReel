@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  xmlns:card_view="http://schemas.android.com/apk/res-auto"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:orientation="vertical">
+
+
+	<android.support.v7.widget.CardView
+		android:id="@+id/card_view"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_marginBottom="7dp"
+		android:layout_marginLeft="10dp"
+
+		android:layout_marginRight="10dp" android:layout_marginTop="0dp" android:elevation="20dp"
+		card_view:cardCornerRadius="2dp">
+		<LinearLayout
+			android:id="@+id/articleBody"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1" android:orientation="vertical">
+
+			<ImageView
+				android:id="@+id/articleimage"
+				android:layout_width="match_parent" android:layout_height="250sp"
+				android:layout_weight="1"/>
+			<dukaconnect.newsapi.font.RobotoTextView
+				android:id="@+id/articleTitle"
+				style="@style/TextViewAppearance.Headline1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="title"/>
+
+			<TextView
+				android:id="@+id/articledescription"
+				android:layout_width="match_parent"
+				android:layout_height="50dp"
+				android:text="Desc"
+
+			/>
+			<TextView
+				android:id="@+id/articlesource"
+				android:layout_width="match_parent"
+				android:layout_height="50dp"
+
+				android:text="source"
+
+			/>
+			<TextView
+				android:id="@+id/articleurl"
+				android:layout_width="match_parent"
+				android:layout_height="50dp"
+
+				android:text="url"
+			/>
+		</LinearLayout>
+
+	</android.support.v7.widget.CardView>
+</LinearLayout>

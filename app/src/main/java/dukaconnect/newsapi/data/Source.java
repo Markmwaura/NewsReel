@@ -15,7 +15,7 @@ public class Source {
         this._id = id;
         this._name = name;
         this._description = description;
-        this._url = description;
+        this._url = url;
         this._category = category;
 
 
