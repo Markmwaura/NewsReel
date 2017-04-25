@@ -50,43 +50,8 @@ public class TechSourcesListAdapter extends RecyclerView.Adapter<TechSourcesList
 
         holder.tech_description.setText(item.get_category());
 
-
-        // loading album cover using Glide library
-       // Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
-
-//        holder.overflow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showPopupMenu(holder.overflow);
-//            }
-//        });
     }
 
-//    @SuppressLint("InflateParams")
-//    @Override
-//    public View getView(final int position, View convertView, ViewGroup parent) {
-//        if (inflater == null) {
-//            inflater = (LayoutInflater) activity
-//                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        }
-//
-//        if (convertView == null) {
-//            convertView = inflater.inflate(R.layout.techarticles_item, null);
-//            holder = new ViewHolder(convertView);
-//
-//            convertView.setTag(holder);
-//        } else {
-//            holder = (ViewHolder) convertView.getTag();
-//        }
-//
-//        Source item = (Source) getItem(position);
-//        holder.tech_title.setText(item.get_name());
-//        holder.tech_description.setText(item.get_category());
-//        holder.tech_source.setText(item.get_description());
-//        holder.tech_url.setText(item.get_url());
-//
-//        return convertView;
-//    }
 
 
     public class MyViewHolder  extends RecyclerView.ViewHolder{

@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import dukaconnect.newsapi.app.AppConstants;
 import dukaconnect.newsapi.app.AppController;
 import dukaconnect.newsapi.data.Article;
 import dukaconnect.newsapi.data.DatabaseHandler;
@@ -78,24 +79,14 @@ public class MainActivity extends BaseActivity
         tv.setText(" Hi " + MainSignInActivity.auth.getCurrentUser().getEmail());
         drawer.openDrawer(Gravity.START);
 
-        // newRequestSources(AppConstants.MAINSOURCES_URL);
+        newRequestSources(AppConstants.MAINSOURCES_URL);
 
-        ///newRequestArticles(AppConstants.THENEXTWEB_URL);
+        newRequestArticles(AppConstants.ARTICLES_URL);
 
         List<Source> sources = db.getAllSources();
         List<Article> articles = db.getAllArticles();
 
-//        for (Source sc : sources) {
-//            newRequestArticles(AppConstants.ARTICLES_URL+sc.get_id() );
-//
-//        }
 
-        for (Article cns : articles) {
-            String log = "News source id: " + cns.get_news_source_id() + " Url: " + cns.get_url();
-            // Writing Contacts to log
-            Log.d("articles: ", log);
-
-        }
 
 
     }
