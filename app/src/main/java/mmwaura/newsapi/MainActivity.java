@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,37 +80,44 @@ public class MainActivity extends BaseActivity
 
         newRequestSources(AppConstants.MAINSOURCES_URL);
 
-        newRequestArticles(AppConstants.ARTICLES_URL);
 
         List<Source> sources = db.getAllSources();
         List<Article> articles = db.getAllArticles();
 
 
+        for (Source cns : sources) {
+
+
+            ///List<Article> articles = db.getAllArticles(cns.get_id());
+            newRequestArticles(AppConstants.ARTICLES_URL + cns.get_id());
+
+
+        }
 
 
     }
 
 
     public void newRequestArticles(String url) {
-        Log.i("amark", "here");
+
         JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, url,
                 null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.i("amike", response.toString());
+
 
                 if (response != null) {
 
                     parseJsonArticles(response);
-                    Log.i("amike", "here");
+
                 }
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("amike", error.toString());
+
             }
         });
         AppController.getInstance().getRequestQueue().add(jsonReq);
@@ -139,25 +145,25 @@ public class MainActivity extends BaseActivity
 
 
     public void newRequestSources(String url) {
-        Log.i("mark", "here");
+
         JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, url,
                 null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.i("mike", response.toString());
+
 
                 if (response != null) {
 
                     parseJson(response);
-                    Log.i("mike", "here");
+
                 }
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("mike", error.toString());
+
             }
         });
         AppController.getInstance().getRequestQueue().add(jsonReq);

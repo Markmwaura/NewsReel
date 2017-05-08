@@ -77,7 +77,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
             Article item = (Article) v.getTag(R.id.TAG_OBJECT);
             Intent intent = new Intent(activity, WebViewActivity.class);
             intent.putExtra("Url",item.get_url());
-            Log.i("mark",item.get_url());
+
             activity.startActivity(intent);
         }
     }

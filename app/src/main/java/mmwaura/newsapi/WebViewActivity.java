@@ -24,7 +24,7 @@ public class WebViewActivity extends BaseActivity {
 
        /// mWebview.loadUrl("https://thenextweb.com/");
 
-        Log.i("work", getIntent().getExtras().getString("Url"));
+        Log.i("get Url from previous", getIntent().getExtras().getString("Url"));
 
         mWebview  = new WebView(this);
 

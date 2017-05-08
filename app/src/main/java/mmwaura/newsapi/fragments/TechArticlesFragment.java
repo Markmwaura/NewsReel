@@ -55,7 +55,7 @@ public class TechArticlesFragment extends Fragment{
         db = new DatabaseHandler(context);
 
         List<Source> sources = db.getAllSources("technology");
-        Log.d("sourcenewsid: ", "mark");
+
         for (Source cns : sources) {
 
             Source item = new Source();

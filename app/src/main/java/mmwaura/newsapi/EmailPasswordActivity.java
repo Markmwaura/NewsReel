@@ -53,7 +53,7 @@ public class EmailPasswordActivity extends BaseActivity implements View.OnClickL
     }
 
     private void signIn(String email, String password) {
-        Log.d(TAG, "signIn:" + email);
+
         if (!validateInputs()) {
             return;
         }
