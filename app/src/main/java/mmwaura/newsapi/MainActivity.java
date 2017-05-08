@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity
 
        /// List<Article> articles = db.getAllArticles();
 
-        new getAllArticles().execute();
+       // new getAllArticles().execute();
 
 
 
@@ -253,28 +253,28 @@ public class MainActivity extends BaseActivity
 
         }else if (id == R.id.nav_politics) {
             fragment = new TechArticlesFragment();
-            setTitle("Politics");
+            setTitle("Politics Sources");
             bundle = new Bundle();
             bundle.putString("category", "politics");
             fragment.setArguments(bundle);
 
         }else if (id == R.id.nav_business) {
             fragment = new TechArticlesFragment();
-            setTitle("Business");
+            setTitle("Business Sources");
             bundle = new Bundle();
             bundle.putString("category", "business");
             fragment.setArguments(bundle);
 
         }else if (id == R.id.nav_sports) {
             fragment = new TechArticlesFragment();
-            setTitle("Sports");
+            setTitle("Sports sources");
             bundle = new Bundle();
             bundle.putString("category", "sport");
             fragment.setArguments(bundle);
 
         }else if (id == R.id.nav_general) {
             fragment = new TechArticlesFragment();
-            setTitle("General");
+            setTitle("General News Source");
             bundle = new Bundle();
             bundle.putString("category", "general");
             fragment.setArguments(bundle);

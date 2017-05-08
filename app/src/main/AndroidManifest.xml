@@ -38,13 +38,14 @@
 		<activity
 			android:name="mmwaura.newsapi.ArticleActivity"
 			android:label="Article Activity"
-			android:theme="@style/AppTheme">
+
+			android:theme="@style/AppTheme.NoActionBar">
 
 		</activity>
 		<activity
 			android:name="mmwaura.newsapi.WebViewActivity"
 			android:label="Article"
-			android:theme="@style/AppTheme">
+			android:theme="@style/AppTheme.NoActionBar">
 
 		</activity>
 	</application>

@@ -1,8 +1,12 @@
 package mmwaura.newsapi;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -10,7 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import mmwaura.newsapi.adapters.TechArticleListAdapter;
+import mmwaura.newsapi.adapters.CatArticlesListAdapter;
 import mmwaura.newsapi.data.Article;
 import mmwaura.newsapi.data.DatabaseHandler;
 
@@ -25,23 +29,30 @@ public class ArticleActivity extends BaseActivity {
     Context context;
     View view;
     DatabaseHandler db;
-    private ListView techarticleList;
+    private RecyclerView techarticlesList;
     private List<Article> techarticleItems;
-    private TechArticleListAdapter techarticleListAdapter;
+    private CatArticlesListAdapter techarticleListAdapter;
+    private Activity activity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_articles);
         String category = getIntent().getStringExtra("category");
+        setTitle(category + " articles");
         Toast.makeText(this, category, Toast.LENGTH_LONG).show();
 
-        tech_articlesList = (ListView) findViewById(R.id.tech_articlesList);
+        techarticlesList = (RecyclerView) findViewById(R.id.tech_articlesList);
 
         techarticleItems = new ArrayList<Article>();
-        techarticleListAdapter = new TechArticleListAdapter(this, techarticleItems);
+        techarticleListAdapter = new CatArticlesListAdapter(activity, techarticleItems );
 
-        tech_articlesList.setAdapter(techarticleListAdapter);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
+        techarticlesList.setLayoutManager(mLayoutManager);
+        techarticlesList.setItemAnimator(new DefaultItemAnimator());
+        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        //tech_articlesList.setItemAnimator(new DefaultItemAnimator());
+        techarticlesList.setAdapter(techarticleListAdapter);
 
         db = new DatabaseHandler(this);
 
@@ -55,6 +66,7 @@ public class ArticleActivity extends BaseActivity {
                 item.set_desc(article.get_desc());
                 item.set_url(article.get_url());
                 item.set_news_source_id(article.get_news_source_id());
+                item.set_urltoimage(article.get_urltoimage());
 
                 techarticleItems.add(item);
 
