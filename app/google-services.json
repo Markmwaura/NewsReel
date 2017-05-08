@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:657225220538:android:d3a56c5c93b90b19",
+        "mobilesdk_app_id": "1:657225220538:android:bc33fe4e343117ca",
         "android_client_info": {
-          "package_name": "dukaconnect.newsapi"
+          "package_name": "mmwaura.newsapi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "657225220538-gs5teb5utd21hlr8o5heod2q8jl7t03p.apps.googleusercontent.com",
+          "client_id": "657225220538-qavrb8pnbb4ijsv3hknmhequq9l41q98.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "dukaconnect.newsapi",
+            "package_name": "mmwaura.newsapi",
             "certificate_hash": "cf4039575e4c811857df54bdde41df7b217ec909"
           }
         },

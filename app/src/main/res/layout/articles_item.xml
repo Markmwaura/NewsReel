@@ -26,7 +26,7 @@
 				android:id="@+id/articleimage"
 				android:layout_width="match_parent" android:layout_height="250sp"
 				android:layout_weight="1"/>
-			<dukaconnect.newsapi.font.RobotoTextView
+			<mmwaura.newsapi.font.RobotoTextView
 				android:id="@+id/articleTitle"
 				style="@style/TextViewAppearance.Headline1"
 				android:layout_width="match_parent"
