@@ -7,13 +7,27 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="All Articles"/>
         <item
-            android:id="@+id/nav_techsources"
+            android:id="@+id/nav_tech"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Technology Sources"/>
+            android:title="Technology"/>
         <item
-            android:id="@+id/nav_techsource_article"
+            android:id="@+id/nav_politics"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Technology Articles"/>
+            android:title="Politics"/>
+
+        <item
+            android:id="@+id/nav_business"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Business"/>
+        <item
+            android:id="@+id/nav_sports"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Sports"/>
+        <item
+            android:id="@+id/nav_general"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="General"/>
+
 
     </group>
 

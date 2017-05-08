@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity
     DatabaseHandler db;
     private Fragment fragment = null;
     private FragmentManager fragmentManager;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,21 +82,37 @@ public class MainActivity extends BaseActivity
 
         newRequestSources(AppConstants.MAINSOURCES_URL);
 
+       /// List<Article> articles = db.getAllArticles();
 
-        List<Source> sources = db.getAllSources();
-        List<Article> articles = db.getAllArticles();
-
-
-        for (Source cns : sources) {
+        new getAllArticles().execute();
 
 
-            ///List<Article> articles = db.getAllArticles(cns.get_id());
-            newRequestArticles(AppConstants.ARTICLES_URL + cns.get_id());
 
+    }
 
+    class getAllArticles extends AsyncTask<String, Void , String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
         }
 
+        @Override
+        protected String doInBackground(String... params) {
 
+            List<Source> sources = db.getAllSources();
+            for (Source cns : sources) {
+                ///List<Article> articles = db.getAllArticles(cns.get_id());
+                newRequestArticles(AppConstants.ARTICLES_URL + cns.get_id());
+
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String o) {
+            super.onPostExecute(o);
+        }
     }
 
 
@@ -216,17 +234,50 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+//        else if (id == R.id.nav_techsources) {
+//            fragment = new TechSourcesFragment();
+//            setTitle("All technology Sources");
+//
+//        }
+
         if (id == R.id.nav_all) {
             fragment = new HomeFragment();
             setTitle("All Articles");
 
-        } else if (id == R.id.nav_techsources) {
-            fragment = new TechSourcesFragment();
-            setTitle("All technology Sources");
-
-        } else if (id == R.id.nav_techsource_article) {
+        } else if (id == R.id.nav_tech) {
             fragment = new TechArticlesFragment();
             setTitle("Articles from Source");
+            bundle = new Bundle();
+            bundle.putString("category", "technology");
+            fragment.setArguments(bundle);
+
+        }else if (id == R.id.nav_politics) {
+            fragment = new TechArticlesFragment();
+            setTitle("Politics");
+            bundle = new Bundle();
+            bundle.putString("category", "politics");
+            fragment.setArguments(bundle);
+
+        }else if (id == R.id.nav_business) {
+            fragment = new TechArticlesFragment();
+            setTitle("Business");
+            bundle = new Bundle();
+            bundle.putString("category", "business");
+            fragment.setArguments(bundle);
+
+        }else if (id == R.id.nav_sports) {
+            fragment = new TechArticlesFragment();
+            setTitle("Sports");
+            bundle = new Bundle();
+            bundle.putString("category", "sport");
+            fragment.setArguments(bundle);
+
+        }else if (id == R.id.nav_general) {
+            fragment = new TechArticlesFragment();
+            setTitle("General");
+            bundle = new Bundle();
+            bundle.putString("category", "general");
+            fragment.setArguments(bundle);
 
         } else if (id == R.id.nav_signout) {
             signOut();

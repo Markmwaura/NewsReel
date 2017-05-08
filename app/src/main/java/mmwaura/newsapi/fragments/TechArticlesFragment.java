@@ -2,12 +2,12 @@ package mmwaura.newsapi.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +24,14 @@ import mmwaura.newsapi.data.Source;
  * Created by mark on 4/24/17.
  */
 
-public class TechArticlesFragment extends Fragment{
+public class TechArticlesFragment extends Fragment {
     Context context;
     View view;
     DatabaseHandler db;
     private RecyclerView tech_articleList;
     private List<Source> tech_articleItems;
     private TechArticlesListAdapter tech_articleListAdapter;
+    private String category;
 
 
     @Nullable
@@ -53,50 +54,48 @@ public class TechArticlesFragment extends Fragment{
 
 
         db = new DatabaseHandler(context);
-
-        List<Source> sources = db.getAllSources("technology");
-
-        for (Source cns : sources) {
-
-            Source item = new Source();
-
-            item.set_id(cns.get_id());
-            item.set_name(cns.get_name());
-            item.set_category(cns.get_category());
-
-
-            tech_articleItems.add(item);
-
-
-
-//            List<Article> articles = db.getAllArticles(cns.get_category());
-//
-//            for (Article article : articles) {
-//
-//                Article item = new Article();
-//
-//                item.set_title(article.get_title());
-//                item.set_desc(article.get_desc());
-//                item.set_url(article.get_url());
-//                item.set_news_source_id(article.get_news_source_id());
-//
-//                tech_articleItems.add(item);
-//
-//            }
-
-
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            category = bundle.getString("category", "general");
         }
 
-        tech_articleListAdapter.notifyDataSetChanged();
-
+        new addList().execute();
 
 
         return view;
     }
 
-
     private void initializeView() {
         tech_articleList = (RecyclerView) view.findViewById(R.id.list_tech_articles_sources);
 
+    }
+
+    private class addList extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            List<Source> sources = db.getAllSources(category);
+
+            for (Source cns : sources) {
+
+                Source item = new Source();
+
+                item.set_id(cns.get_id());
+                item.set_name(cns.get_name());
+                item.set_category(cns.get_category());
+
+
+                tech_articleItems.add(item);
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            tech_articleListAdapter.notifyDataSetChanged();
+
+        }
     }
 }
