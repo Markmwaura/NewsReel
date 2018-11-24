@@ -27,6 +27,11 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/DEPENDENCIES'
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
